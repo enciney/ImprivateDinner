@@ -1,10 +1,14 @@
-using ImprivateDinner.Application.Services.Authentication;
+
+using ImprivateDinner.Application;
+using ImprivateDinner.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 {
     // Add services to the container.
+    builder.Services
+        .AddApplication()
+        .AddInfrastructure();
     builder.Services.AddControllers();
-    builder.Services.AddScoped<IAuthenticationService,AuthenticationService>();
 }
 
 var app = builder.Build();
@@ -13,5 +17,3 @@ var app = builder.Build();
     app.MapControllers();
     app.Run();
 }
-
-

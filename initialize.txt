@@ -14,3 +14,5 @@ dotnet add .\ImprivateDinner.Api\ reference .\ImprivateDinner.Infrastructure\
 -> You can send request via .http or .rest files so no need browser or postman to test your api
 #Install Markdown Preview Enhanced
 -> Blueprint library to represent your blueprint as formatted
+#Install NuGet Reverse Package Search ("Add Package" support) Package
+-> to find which packages are needed for a reference
