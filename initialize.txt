@@ -1,0 +1,8 @@
+dotnet new sln --name ImprivateDinner
+dotnet new webapi -o ImprivateDinner.Api
+dotnet new classlib -o ImprivateDinner.Domain
+dotnet new classlib -o ImprivateDinner.Infrastructure
+dotnet new classlib -o ImprivateDinner.Contracts
+dotnet new classlib -o ImprivateDinner.Application
+dotnet sln add (ls -r **\*.csproj)
+dotnet build
