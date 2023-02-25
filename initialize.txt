@@ -12,3 +12,5 @@ dotnet add .\ImprivateDinner.Application\ reference .\ImprivateDinner.Domain\
 dotnet add .\ImprivateDinner.Api\ reference .\ImprivateDinner.Infrastructure\
 #Install REST Client for VS Code
 -> You can send request via .http or .rest files so no need browser or postman to test your api
+#Install Markdown Preview Enhanced
+-> Blueprint library to represent your blueprint as formatted
