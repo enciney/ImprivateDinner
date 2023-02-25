@@ -6,3 +6,9 @@ dotnet new classlib -o ImprivateDinner.Contracts
 dotnet new classlib -o ImprivateDinner.Application
 dotnet sln add (ls -r **\*.csproj)
 dotnet build
+dotnet add .\ImprivateDinner.Api\ reference .\ImprivateDinner.Application\ .\ImprivateDinner.Contracts\
+dotnet add .\ImprivateDinner.Infrastructure\ reference .\ImprivateDinner.Application\
+dotnet add .\ImprivateDinner.Application\ reference .\ImprivateDinner.Domain\
+dotnet add .\ImprivateDinner.Api\ reference .\ImprivateDinner.Infrastructure\
+#Install REST Client for VS Code
+-> You can send request via .http or .rest files so no need browser or postman to test your api
