@@ -22,3 +22,5 @@ dotnet add .\ImprivateDinner.Api\ reference .\ImprivateDinner.Infrastructure\
 -> to complete namespaces naming correctly
 #Install C# Stretch
 -> giving template to create interfaces and classes
+#Install Auto-Using for C#
+-> adding missing usings automatically
