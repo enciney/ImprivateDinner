@@ -24,3 +24,6 @@ dotnet add .\ImprivateDinner.Api\ reference .\ImprivateDinner.Infrastructure\
 -> giving template to create interfaces and classes
 #Install Auto-Using for C#
 -> adding missing usings automatically
+dotnet user-secrets init --project .\ImprivateDinner.Api\
+dotnet user-secrets set --project .\ImprivateDinner.Api\ "JwtSettings:Secret" "super-secret-key"
+dotnet user-secrets list --project .\ImprivateDinner.Api\
