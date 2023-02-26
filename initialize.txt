@@ -16,3 +16,9 @@ dotnet add .\ImprivateDinner.Api\ reference .\ImprivateDinner.Infrastructure\
 -> Blueprint library to represent your blueprint as formatted
 #Install NuGet Reverse Package Search ("Add Package" support) Package
 -> to find which packages are needed for a reference
+#Install jwt-decoder for VS Code
+-> decoding the JWT token
+#Install C# Namespace Autocompletion
+-> to complete namespaces naming correctly
+#Install C# Stretch
+-> giving template to create interfaces and classes
