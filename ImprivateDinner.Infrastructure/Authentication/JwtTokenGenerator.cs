@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using ImprivateDinner.Application.Common.Interfaces.Authentication;
 using ImprivateDinner.Application.Common.Interfaces.Services;
+using ImprivateDinner.Domain.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -20,7 +21,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator
         this.jwtOptions = jwtOptions;
     }
 
-    public string GenerateToken(Guid userId, string firstName, string lastName)
+    public string GenerateToken(User user)
     {
         var signingCredentials = new SigningCredentials(
             new SymmetricSecurityKey(
@@ -30,9 +31,9 @@ public class JwtTokenGenerator : IJwtTokenGenerator
         var claims = new[]
         {
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
-            new Claim(JwtRegisteredClaimNames.FamilyName, lastName),
-            new Claim(JwtRegisteredClaimNames.GivenName, firstName),
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
+            new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
         };
         var securityToken = new JwtSecurityToken(
             claims: claims,

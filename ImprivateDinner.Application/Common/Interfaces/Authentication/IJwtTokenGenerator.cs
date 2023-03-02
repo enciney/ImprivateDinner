@@ -1,6 +1,8 @@
+using ImprivateDinner.Domain.Entities;
+
 namespace ImprivateDinner.Application.Common.Interfaces.Authentication;
 
 public interface IJwtTokenGenerator
 {
-    string GenerateToken(Guid userId, string firstName, string lastName);
+    string GenerateToken(User user);
 }
