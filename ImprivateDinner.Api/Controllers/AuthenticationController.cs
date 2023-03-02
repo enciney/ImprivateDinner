@@ -1,3 +1,4 @@
+using ImprivateDinner.Api.Filters;
 using ImprivateDinner.Application.Services.Authentication;
 using ImprivateDinner.Contracts.Authentication;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ namespace ImprivateDinner.Api.Controllers;
 
 [ApiController]
 [Route("auth")]
+[ErrorHandlingFilter]
 public class AuthenticationController : ControllerBase
 {
     private readonly IAuthenticationService authService;
