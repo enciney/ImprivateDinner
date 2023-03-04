@@ -1,4 +1,4 @@
-using ImprivateDinner.Application.Persistence;
+using ImprivateDinner.Application.Interfaces.Persistence;
 using ImprivateDinner.Domain.Entities;
 
 namespace ImprivateDinner.Infrastructure.Persistence;

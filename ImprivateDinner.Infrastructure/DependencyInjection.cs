@@ -1,6 +1,6 @@
 using ImprivateDinner.Application.Common.Interfaces.Authentication;
 using ImprivateDinner.Application.Common.Interfaces.Services;
-using ImprivateDinner.Application.Persistence;
+using ImprivateDinner.Application.Interfaces.Persistence;
 using ImprivateDinner.Infrastructure.Authentication;
 using ImprivateDinner.Infrastructure.Persistence;
 using ImprivateDinner.Infrastructure.Services;

@@ -13,4 +13,8 @@
     <ProjectReference Include="..\ImprivateDinner.Infrastructure\ImprivateDinner.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="oneof" Version="3.0.223" />
+  </ItemGroup>
+
 </Project>

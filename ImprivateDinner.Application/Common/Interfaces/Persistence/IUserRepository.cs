@@ -1,6 +1,6 @@
 using ImprivateDinner.Domain.Entities;
 
-namespace ImprivateDinner.Application.Persistence;
+namespace ImprivateDinner.Application.Interfaces.Persistence;
 
 public interface IUserRepository
 {
