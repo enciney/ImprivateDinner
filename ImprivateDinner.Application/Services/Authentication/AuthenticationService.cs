@@ -1,8 +1,8 @@
+using FluentResults;
 using ImprivateDinner.Application.Common.Errors;
 using ImprivateDinner.Application.Common.Interfaces.Authentication;
 using ImprivateDinner.Application.Interfaces.Persistence;
 using ImprivateDinner.Domain.Entities;
-using OneOf;
 
 namespace ImprivateDinner.Application.Services.Authentication;
 
@@ -35,12 +35,14 @@ public class AuthenticationService : IAuthenticationService
         return new AuthenticationResult(user, token);
     }
 
-    public OneOf<AuthenticationResult,DuplicateEmailError> Register(string firstName, string lastName, string email, string password)
+    public Result<AuthenticationResult> Register(string firstName, string lastName, string email, string password)
     {
         // 1. Validate the user doesn't exist
         if (userRepository.GetUserByEmail(email) is not null)
         {
-           return new DuplicateEmailError();
+            return Result.Fail<AuthenticationResult>(new DuplicateEmailError());
+            // we can also return a list of IError since the aim of using Result rather then OneOf is ability to return multiple IError
+            //return Result.Fail<AuthenticationResult>( new [] {new DuplicateEmailError()});
         }
         // 2. Create User(generate unique ID) & Persist to DB        
         var user = new User(){

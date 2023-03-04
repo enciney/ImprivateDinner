@@ -4,7 +4,6 @@ using ImprivateDinner.Application.Common.Errors;
 using ImprivateDinner.Application.Services.Authentication;
 using ImprivateDinner.Contracts.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using OneOf;
 
 namespace ImprivateDinner.Api.Controllers;
 
@@ -22,11 +21,17 @@ public class AuthenticationController : ControllerBase
     [HttpPost("register")]
     public IActionResult Register(RegisterRequest request)
     {
-        OneOf<AuthenticationResult,DuplicateEmailError> result = authService.Register(request.FirstName, request.LastName, request.Email, request.Password);
-        return result.Match( 
-            authResult => Ok(MapAuthResult(authResult)),
-            // _ means delegate is getting a single parameter but action is not using it for two parameter it will be (_,_)
-            _ => Problem(statusCode: StatusCodes.Status409Conflict, title: "Email already exists") );
+        var result = authService.Register(request.FirstName, request.LastName, request.Email, request.Password);
+        if(result.IsSuccess)
+        {
+            return MapAuthResult(result.Value);
+        }
+        var firstError = result.Errors[0];
+        if(firstError is DuplicateEmailError)
+        {
+            return Problem(statusCode: StatusCodes.Status409Conflict, title: "Email already exists");
+        }
+        return Problem();
     }
 
     private IActionResult MapAuthResult(AuthenticationResult authResult)

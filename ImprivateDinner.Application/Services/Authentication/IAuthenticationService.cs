@@ -1,10 +1,10 @@
+using FluentResults;
 using ImprivateDinner.Application.Common.Errors;
-using OneOf;
 
 namespace ImprivateDinner.Application.Services.Authentication;
 
 public interface IAuthenticationService
 {
-    OneOf<AuthenticationResult,DuplicateEmailError> Register(string firstName, string lastName, string email, string password);
+    Result<AuthenticationResult> Register(string firstName, string lastName, string email, string password);
     AuthenticationResult Login(string email, string password);
 }
