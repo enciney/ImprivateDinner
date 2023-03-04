@@ -1,15 +1,12 @@
-using System.Net;
-using ImprivateDinner.Api.Filters;
-using ImprivateDinner.Application.Common.Errors;
 using ImprivateDinner.Application.Services.Authentication;
+using ImprivateDinner.Domain.Common.Errors;
 using ImprivateDinner.Contracts.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ImprivateDinner.Api.Controllers;
 
-[ApiController]
 [Route("auth")]
-public class AuthenticationController : ControllerBase
+public class AuthenticationController : ApiController
 {
     private readonly IAuthenticationService authService;
 
@@ -22,16 +19,10 @@ public class AuthenticationController : ControllerBase
     public IActionResult Register(RegisterRequest request)
     {
         var result = authService.Register(request.FirstName, request.LastName, request.Email, request.Password);
-        if(result.IsSuccess)
-        {
-            return MapAuthResult(result.Value);
-        }
-        var firstError = result.Errors[0];
-        if(firstError is DuplicateEmailError)
-        {
-            return Problem(statusCode: StatusCodes.Status409Conflict, title: "Email already exists");
-        }
-        return Problem();
+        return result.Match(
+            authresult => Ok(MapAuthResult(authresult)),
+            errors => Problem(errors)
+        );
     }
 
     private IActionResult MapAuthResult(AuthenticationResult authResult)
@@ -49,14 +40,16 @@ public class AuthenticationController : ControllerBase
     [HttpPost("login")]
     public IActionResult Login(LoginRequest request)
     {
-        var authResult = authService.Login(request.Email, request.Password);
-        var response = new AuthenticationResponse(
-            authResult.User.Id,
-            authResult.User.FirstName,
-            authResult.User.LastName,
-            authResult.User.Email,
-            authResult.Token
+        var result = authService.Login(request.Email, request.Password);
+
+        if(result.IsError && result.FirstError == Errors.User.InvalidCredentials)
+        {
+            return Problem(statusCode: StatusCodes.Status401Unauthorized,
+            title: result.FirstError.Description);
+        }
+        return result.Match(
+            authresult => Ok(MapAuthResult(authresult)),
+            errors => Problem(errors)
         );
-        return Ok(response);
     }
 }

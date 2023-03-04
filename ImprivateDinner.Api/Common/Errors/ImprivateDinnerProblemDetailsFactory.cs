@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using ErrorOr;
+using ImprivateDinner.Api.Common.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -89,7 +91,7 @@ public class ImprivateDinnerProblemDetailsFactory: ProblemDetailsFactory
         {
             problemDetails.Extensions["traceId"] = traceId;
         }
-
-        problemDetails.Extensions.Add("customProperty", "customValue");
+        var errors = httpContext?.Items[HttpContextItemKeys.Errors] as List<Error>;
+        problemDetails.Extensions.Add("errorcodes", errors);
     }
 }
