@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
 
-namespace ImprivateDinner.Api.Errors;
+namespace ImprivateDinner.Api.Common.Errors;
 
 public class ImprivateDinnerProblemDetailsFactory: ProblemDetailsFactory
 {

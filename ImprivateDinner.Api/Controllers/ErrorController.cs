@@ -1,3 +1,4 @@
+using ImprivateDinner.Application.Common.Errors;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,13 @@ public class ErrorController: ControllerBase
     public IActionResult Error()
     {
         var exception = HttpContext.Features.Get<IExceptionHandlerFeature>()?.Error;
-        return Problem(statusCode: 400, title: exception?.Message);
+
+        var (statusCode, message) = exception switch
+        {
+            IServiceException serviceException => ((int)serviceException.StatusCode, serviceException.ErrorMessage),
+            _ => (StatusCodes.Status500InternalServerError, "An unexpected error occured.")
+
+        };
+        return Problem(title: message, statusCode: statusCode);
     }
 }

@@ -1,3 +1,4 @@
+using ImprivateDinner.Application.Common.Errors;
 using ImprivateDinner.Application.Common.Interfaces.Authentication;
 using ImprivateDinner.Application.Persistence;
 using ImprivateDinner.Domain.Entities;
@@ -38,7 +39,7 @@ public class AuthenticationService : IAuthenticationService
         // 1. Validate the user doesn't exist
         if (userRepository.GetUserByEmail(email) is not null)
         {
-            throw new Exception($"user is already exist with '{email}' email address");
+            throw new DuplicateEmailException();
         }
         // 2. Create User(generate unique ID) & Persist to DB        
         var user = new User(){

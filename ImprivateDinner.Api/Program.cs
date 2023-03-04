@@ -1,5 +1,5 @@
 
-using ImprivateDinner.Api.Errors;
+using ImprivateDinner.Api.Common.Errors;
 using ImprivateDinner.Api.Filters;
 using ImprivateDinner.Api.Middleware;
 using ImprivateDinner.Application;
