@@ -27,3 +27,6 @@ dotnet add .\ImprivateDinner.Api\ reference .\ImprivateDinner.Infrastructure\
 dotnet user-secrets init --project .\ImprivateDinner.Api\
 dotnet user-secrets set --project .\ImprivateDinner.Api\ "JwtSettings:Secret" "super-secret-key"
 dotnet user-secrets list --project .\ImprivateDinner.Api\
+dotnet watch run --project .\ImprivateDinner.Api
+#Install Github Repositories
+-> ability to look source code of any library that in github repo
