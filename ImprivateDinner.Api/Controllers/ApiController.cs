@@ -3,7 +3,6 @@ using ErrorOr;
 using ImprivateDinner.Api.Common.Http;
 using ImprivateDinner.Api.Filters;
 using ImprivateDinner.Application.Common.Errors;
-using ImprivateDinner.Application.Services.Authentication;
 using ImprivateDinner.Contracts.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
