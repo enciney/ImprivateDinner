@@ -2,23 +2,28 @@ using ImprivateDinner.Application.Services.Authentication;
 using ImprivateDinner.Domain.Common.Errors;
 using ImprivateDinner.Contracts.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using ImprivateDinner.Application.Services.Authentication.Commands;
+using ImprivateDinner.Application.Services.Authentication.Queries;
+using ImprivateDinner.Application.Services.Authentication.Common;
 
 namespace ImprivateDinner.Api.Controllers;
 
 [Route("auth")]
 public class AuthenticationController : ApiController
 {
-    private readonly IAuthenticationService authService;
+    private readonly IAuthenticationQueryService authQueryService;
+    private readonly IAuthenticationCommandService authCommandService;
 
-    public AuthenticationController(IAuthenticationService authService)
+    public AuthenticationController(IAuthenticationCommandService authCommandService, IAuthenticationQueryService authQueryService)
     {
-        this.authService = authService;
+        this.authCommandService = authCommandService;
+        this.authQueryService = authQueryService;
     }
 
     [HttpPost("register")]
     public IActionResult Register(RegisterRequest request)
     {
-        var result = authService.Register(request.FirstName, request.LastName, request.Email, request.Password);
+        var result = authCommandService.Register(request.FirstName, request.LastName, request.Email, request.Password);
         return result.Match(
             authresult => Ok(MapAuthResult(authresult)),
             errors => Problem(errors)
@@ -40,7 +45,7 @@ public class AuthenticationController : ApiController
     [HttpPost("login")]
     public IActionResult Login(LoginRequest request)
     {
-        var result = authService.Login(request.Email, request.Password);
+        var result = authQueryService.Login(request.Email, request.Password);
 
         if(result.IsError && result.FirstError == Errors.User.InvalidCredentials)
         {

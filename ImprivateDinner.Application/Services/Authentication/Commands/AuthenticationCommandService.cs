@@ -1,42 +1,23 @@
 using ErrorOr;
-using FluentResults;
-using ImprivateDinner.Application.Common.Errors;
 using ImprivateDinner.Application.Common.Interfaces.Authentication;
 using ImprivateDinner.Application.Interfaces.Persistence;
+using ImprivateDinner.Application.Services.Authentication.Common;
 using ImprivateDinner.Domain.Common.Errors;
 using ImprivateDinner.Domain.Entities;
 
-namespace ImprivateDinner.Application.Services.Authentication;
+namespace ImprivateDinner.Application.Services.Authentication.Commands;
 
-public class AuthenticationService : IAuthenticationService
+public class AuthenticationCommandService : IAuthenticationCommandService
 {
     private readonly IJwtTokenGenerator jwtTokenGenerator;
     private readonly IUserRepository userRepository;
 
-    public AuthenticationService(IJwtTokenGenerator jwtTokenGenerator, IUserRepository userRepository)
+    public AuthenticationCommandService(IJwtTokenGenerator jwtTokenGenerator, IUserRepository userRepository)
     {
         this.jwtTokenGenerator = jwtTokenGenerator;
         this.userRepository = userRepository;
     }
-
-    public ErrorOr<AuthenticationResult> Login(string email, string password)
-    {
-        // 1. Validate the user does exist
-        var user = userRepository.GetUserByEmail(email);
-        if (userRepository.GetUserByEmail(email) is null)
-        {
-            return Errors.User.Missing;
-        }
-        // 2. Validate the password is correct
-        if(user?.Password != password)
-        {
-            return Errors.User.InvalidCredentials;
-        }
-        // 3. Create JWT Token
-        var token = jwtTokenGenerator.GenerateToken(user);
-        return new AuthenticationResult(user, token);
-    }
-
+    
     public ErrorOr<AuthenticationResult> Register(string firstName, string lastName, string email, string password)
     {
         // 1. Validate the user doesn't exist
