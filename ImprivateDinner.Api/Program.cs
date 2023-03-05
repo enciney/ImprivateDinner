@@ -1,7 +1,7 @@
 
+using ImprivateDinner.Api;
 using ImprivateDinner.Api.Common.Errors;
-using ImprivateDinner.Api.Filters;
-using ImprivateDinner.Api.Middleware;
+using ImprivateDinner.Api.Mapping;
 using ImprivateDinner.Application;
 using ImprivateDinner.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -10,11 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 {
     // Add services to the container.
     builder.Services
+        .AddPresentation()
         .AddApplication()
         .AddInfrastructure(builder.Configuration);
-    // builder.Services.AddControllers( options => options.Filters.Add<ErrorHandlingFilterAttribute>());
-    builder.Services.AddControllers( );
-    builder.Services.AddSingleton<ProblemDetailsFactory, ImprivateDinnerProblemDetailsFactory>();
+    
 }
 
 var app = builder.Build();

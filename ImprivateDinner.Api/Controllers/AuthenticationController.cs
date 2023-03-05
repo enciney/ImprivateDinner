@@ -5,6 +5,8 @@ using MediatR;
 using ImprivateDinner.Application.Authentication.Commands.Register;
 using ImprivateDinner.Application.Authentication.Queries.Login;
 using ImprivateDinner.Application.Authentication.Common;
+using MapsterMapper;
+using ErrorOr;
 
 namespace ImprivateDinner.Api.Controllers;
 
@@ -12,47 +14,40 @@ namespace ImprivateDinner.Api.Controllers;
 public class AuthenticationController : ApiController
 {
     private readonly IMediator mediator;
+    private readonly IMapper mapper;
 
-    public AuthenticationController(IMediator mediator)
+    public AuthenticationController(IMediator mediator, IMapper mapper)
     {
         this.mediator = mediator;
+        this.mapper = mapper;
     }
 
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterRequest request)
     {
-        var command = new RegisterCommand(request.FirstName, request.LastName, request.Email, request.Password);
+        var command = mapper.Map<RegisterCommand>(request);
         var result = await mediator.Send(command);
-        return result.Match(
-            authresult => Ok(MapAuthResult(authresult)),
-            errors => Problem(errors)
-        );
+        return GetResult(result);
     }
 
-    private IActionResult MapAuthResult(AuthenticationResult authResult)
-    {
-        var response = new AuthenticationResponse(
-            authResult.User.Id,
-            authResult.User.FirstName,
-            authResult.User.LastName,
-            authResult.User.Email,
-            authResult.Token
-        );
-        return Ok(response);
-    }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginRequest request)
     {
-        var query = new LoginQuery(request.Email, request.Password);
+        var query = mapper.Map<LoginQuery>(request);
         var result = await mediator.Send(query);
-        if(result.IsError && result.FirstError == Errors.User.InvalidCredentials)
+        if (result.IsError && result.FirstError == Errors.User.InvalidCredentials)
         {
             return Problem(statusCode: StatusCodes.Status401Unauthorized,
             title: result.FirstError.Description);
         }
+        return GetResult(result);
+    }
+
+    private IActionResult GetResult(ErrorOr<AuthenticationResult> result)
+    {
         return result.Match(
-            authresult => Ok(MapAuthResult(authresult)),
+            authresult => Ok(mapper.Map<AuthenticationResponse>(authresult)),
             errors => Problem(errors)
         );
     }

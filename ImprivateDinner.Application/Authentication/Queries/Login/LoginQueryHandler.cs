@@ -10,18 +10,20 @@ using ImprivateDinner.Application.Authentication.Common;
 namespace ImprivateDinner.Application.Authentication.Queries.Login;
 
 //Handle LoginQuery and response ErrorOr<AuthenticationResult>
-public class RegisterCommandHandler : IRequestHandler<LoginQuery, ErrorOr<AuthenticationResult>>
+public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<AuthenticationResult>>
 {
     private readonly IJwtTokenGenerator jwtTokenGenerator;
     private readonly IUserRepository userRepository;
 
-    public RegisterCommandHandler(IJwtTokenGenerator jwtTokenGenerator, IUserRepository userRepository)
+    public LoginQueryHandler(IJwtTokenGenerator jwtTokenGenerator, IUserRepository userRepository)
     {
         this.jwtTokenGenerator = jwtTokenGenerator;
         this.userRepository = userRepository;
     }
     public async Task<ErrorOr<AuthenticationResult>> Handle(LoginQuery query, CancellationToken cancellationToken)
     {
+        // to get rid of the warning that coming by compiler about async
+        await Task.CompletedTask;
         // 1. Validate the user does exist
         var user = userRepository.GetUserByEmail(query.Email);
         if (userRepository.GetUserByEmail(query.Email) is null)
