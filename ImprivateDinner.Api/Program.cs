@@ -21,6 +21,9 @@ var app = builder.Build();
     // app.UseMiddleware<ErrorHandlingMiddleware>();
     app.UseExceptionHandler("/error");
     app.UseHttpsRedirection();
+    // Authentication middleware finds the authentication handler to know how to handle the authentication scheme
+    app.UseAuthentication();
+    app.UseAuthorization();
     app.MapControllers();
     app.Run();
 }

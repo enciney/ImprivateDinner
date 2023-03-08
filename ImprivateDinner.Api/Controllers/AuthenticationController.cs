@@ -7,6 +7,7 @@ using ImprivateDinner.Application.Authentication.Queries.Login;
 using ImprivateDinner.Application.Authentication.Common;
 using MapsterMapper;
 using ErrorOr;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ImprivateDinner.Api.Controllers;
 
@@ -23,6 +24,8 @@ public class AuthenticationController : ApiController
     }
 
     [HttpPost("register")]
+    // it means no need authorization
+    [AllowAnonymous]
     public async Task<IActionResult> Register(RegisterRequest request)
     {
         var command = mapper.Map<RegisterCommand>(request);
